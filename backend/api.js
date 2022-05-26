@@ -1,4 +1,5 @@
-const express = require("express")
+const express = require('express');
+const app = express();
 const cors = require("cors")
 const bodyParser = require("body-parser")
 const { db } = require('./dbConfig.js')
@@ -7,7 +8,6 @@ const bcrypt = require("bcrypt")
 require("dotenv").config()
 const mysql = require("mysql")
 
-var app = express()
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ extended: true }))
@@ -24,13 +24,14 @@ app.use(cors())
 
 
 app.post("/signup", async (req,res) => {
-    const user = req.body.name
+    const user = req.body.user
     const email = req.body.email
-    const hashedPassword = req.body.password
-    const hashedConfirmPassword = req.body.confirmPassword
-
-
-    if (hashedPassword == hashedConfirmPassword) {}
+    const password = req.body.password
+    const ConfirmPassword = req.body.confirmPassword
+    console.log(user)
+    console.log(email)
+    console.log(password)
+    if (password == ConfirmPassword) {}
         else {
             console.log("Password does not match! Try again")
         }
@@ -42,7 +43,7 @@ app.post("/signup", async (req,res) => {
         const search_query = mysql.format(searchUser,[email])
 
         const sqlInsert = "INSERT INTO USER (emailid, passwords, usernames) VALUES (?, ?, ?)"
-        const insert_query = mysql.format(sqlInsert,[email,hashedPassword,user])
+        const insert_query = mysql.format(sqlInsert,[email,passwords,user])
         // await Query(`INSERT INTO USER (emailid, passwords, usernames) VALUES ('${email}', '${hashedPassword}', '${user}')`)
 
     await connection.query(search_query, async (err, result) => {
@@ -65,7 +66,16 @@ app.post("/signup", async (req,res) => {
 })
 })
 
-app.post("/Login", (res, req) => {
+// app.post("/Login",(req,res) => {
+//     const email = req.body.email
+//     const password= req.body.password
+//     console.log(email)
+//     console.log(password)
+    
+
+// })
+
+app.post("/Login", (req, res) => {
     const email = req.body.email
     const password = req.body.password
     db.getConnection ( async (err, connection)=> {
@@ -83,14 +93,14 @@ app.post("/Login", (res, req) => {
     // res.sendStatus(404)
     } 
     else {
-        const hashedPassword = result[0].password
-        if (password == hashedPassword) {
+        const password = result[0].password
+        if (password == password) {
         console.log("---------> Login Successful")
-        res.send(`${user} is logged in!`)
+        console.log(`${email} is logged in!`)
         } 
         else {
         console.log("---------> Password Incorrect")
-        alert("Password incorrect!")
+        // alert("Password incorrect!")
         // res.sendStatus(404)
         } 
     }

@@ -1,14 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 
+const CustomInput = ({ type, placeholder, className, callback }) => {
 
-function CustomInput({type,placeholder,className,ref})
-{
- return (
-    <input type={type} ref={ref} placeholder={placeholder}  autocomplete="off" class={className}  />
-  
+  const [input, setInput] = useState("")
+  const handleChange = e => {
+    setInput(e.target.value)
+    callback(input)
+    console.log(input)
+  }
+
+    
+
+    return (
+      <input type={type} placeholder={placeholder} className={className} value={input} required autoComplete="off" onChange={handleChange} />
     )
-
-
-}
+  } 
 
 export default CustomInput;

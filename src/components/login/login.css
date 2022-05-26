@@ -24,7 +24,7 @@ body {
   min-height: 480px;
   overflow: hidden;
 }
-form {
+.form {
   background: #ebecf0;
   display: flex;
   flex-direction: column;
