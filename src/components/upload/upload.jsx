@@ -1,118 +1,81 @@
-import React, { useState,useRef } from "react";
-import {
-  FileUploadContainer,
-  FormField,
-  DragDropText,
-  UploadFileBtn,
-  FilePreviewContainer,
-  ImagePreview,
-  PreviewContainer,
-  PreviewList,
-  FileMetaData,
-  RemoveFileIcon,
-  InputLabel
-} from "./upload.js";
+import React, { useState,useRef,useEffect } from "react";
+import "./upload.css"
 
 import CustomButton from "../custombutton/custombutton";
 
-const DEFAULT_MAX_FILE_SIZE_IN_BYTES = 500000;
-const KILO_BYTES_PER_BYTE = 1000;
+function Upload() {
 
-const convertBytesToKB = (bytes) => Math.round(bytes / KILO_BYTES_PER_BYTE);
-
-const Upload = ( {label,
-    updateFilesCb,
-    maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES,
-    ...otherProps}) => 
-{   
-    const fileInputField = useRef(null);
-    const [files,setFiles] = useState({});
-    const handleUploadBtnClick = () => {
-      fileInputField.current.click();
-    };
-    const handleNewFileUpload = (e) => {
-      const { files: newFiles } = e.target;
-      if (newFiles.length) {
-        let updatedFiles = addNewFiles(newFiles);
-        setFiles(updatedFiles);
-        callUpdateFilesCb(updatedFiles);
-      }
-    };
-    const addNewFiles = (newFiles) => {
-      for (let file of newFiles) {
-        if (file.size <= maxFileSizeInBytes) {
-          if (!otherProps.multiple) {
-            return { file };
-          }
-          files[file.name] = file;
-        }
-      }
-      return { ...files };
-    };
-    const convertNestedObjectToArray = (nestedObj) =>
-    Object.keys(nestedObj).map((key) => nestedObj[key]);
+  const [images, setImages] = useState([])
+  const [imageUrls, setImageUrls] = useState([])
+  const [displayImage, setDisplayImage] = useState(true)
+  const [tryAgain, setTryAgain] = useState(false)
   
-  const callUpdateFilesCb = (files) => {
-    const filesAsArray = convertNestedObjectToArray(files);
-    updateFilesCb(filesAsArray);
-  };
-  const removeFile = (fileName) => {
-    delete files[fileName];
-    setFiles({ ...files });
-    callUpdateFilesCb({ ...files });
-  };
-
- return (
-     <>
-    <FileUploadContainer>
-        <InputLabel>{label}</InputLabel>
-        <DragDropText>Drag and drop your files anywhere or</DragDropText>
-        <UploadFileBtn type="button" onClick={handleUploadBtnClick}>
-          <i className="fas fa-file-upload" />
-          <span> Upload {otherProps.multiple ? "files" : "a file"}</span>
-        </UploadFileBtn>
-        <FormField
-          type="file"
-          ref={fileInputField}
-          onChange={handleNewFileUpload}
-          title=""
-          value=""
-          {...otherProps}
-        />
-      </FileUploadContainer>
-      <FilePreviewContainer>
-        <span>To Upload</span>
-        <PreviewList>
-          {Object.keys(files).map((fileName, index) => {
-            let file = files[fileName];
-            let isImageFile = file.type.split("/")[0] === "image";
-            return (
-              <PreviewContainer key={fileName}>
-                <div>
-                  {isImageFile && (
-                    <ImagePreview
-                      src={URL.createObjectURL(file)}
-                      alt={`file preview ${index}`}
-                    />
-                  )}
-                  <FileMetaData isImageFile={isImageFile}>
-                    <span>{file.name}</span>
-                    <aside>
-                      <span>{convertBytesToKB(file.size)} kb</span>
-                      <RemoveFileIcon
-                        className="fas fa-trash-alt"
-                        onClick={() => removeFile(fileName)}
-                      />
-                    </aside>
-                  </FileMetaData>
-                </div>
-              </PreviewContainer>
-            );
-          })}
-        </PreviewList>
-      </FilePreviewContainer>
-    </>
- )   
+  useEffect(() => {
+      if (images.length < 1) return;
+      setDisplayImage(true)
+      const newImageUrls = []
+      images.forEach(image => newImageUrls.push(URL.createObjectURL(image)))
+      setImageUrls(newImageUrls)
+      if (displayImage) {
+          setDisplayImage(true)
+      }
+  }, [images, displayImage])
+  
+  const onImageChange = (e) => {
+      setImages([...e.target.files])
+      const img = new Image();
+      img.src = imageUrls;
+      img.onload = () => {
+          const width = img.width;
+          const height = img.height;
+          if ((height > 224) || (width > 224)) {
+              setDisplayImage(false)
+              alert("Image size is too large")
+              setDisplayImage(false)
+              images.pop()
+          }}
+  }
+  const onImageLoad = ({ target: img}) => {
+    const height = img.naturalHeight;
+    const width = img.naturalWidth;
+    if ((height > 224) || (width > 224)) {
+        setDisplayImage(false)
+        setTryAgain(true)
+        alert("Image size is too large")
+        images.pop()
+    }
 }
 
-export default Upload;
+  
+  return (
+    <>
+           
+            <input type="file" multiple accept="image/*" onChange={onImageChange} />
+            
+           
+         { imageUrls.map(imageSrc => <img src={displayImage ? imageSrc : 'undefined'} onLoad={onImageLoad} />) }
+        
+        <div onClick={() => window.location.reload(false)} class="try_again">
+        { tryAgain ? 
+                 <CustomButton className="form_btn_2">TRY AGAIN</CustomButton> : 
+                                <></>   }
+
+        </div>
+        
+    
+
+   </>
+)
+ 
+  } 
+           
+           
+                   
+         
+                 
+       
+  
+  // } 
+  
+  export default Upload
+  

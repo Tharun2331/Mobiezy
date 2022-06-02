@@ -10,6 +10,9 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [invalid, setInvalid] = useState("")
+    const [passwordError, setPasswordError] = useState("")
+    const [emailError, setEmailError] = useState("")
+    const [tryAgain, setTryAgain] = useState(false)
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -37,16 +40,16 @@ function Login() {
               // toggleInvalid()
               setInvalid("true")
               a = true
-              // alert("hello")
-              // alert(a)
-              alert("You have entered an invalid email address!")
+              setEmailError("You have entered an invalid email address!")
+              setTryAgain(true)
             }
         if (!a) {
           if (password.length < 6) {
                 setInvalid(true)
                 a = true
-                alert("The password must be at least 6 characters")
+                setPasswordError("The password must be at least 6 character")
                 // toggleInvalid()
+                setTryAgain(true)
             }
           }
           // alert(a)
@@ -64,7 +67,28 @@ function Login() {
           }
         
         }
-        
+        const  handleLoginApi= () => {
+          return(
+           Axios.post('https://vr4cxb4qhb.execute-api.us-west-2.amazonaws.com/prod/getusercred',{
+            "username": email,
+            "password": password
+           }).then(result =>{
+               var res = JSON.stringify(result['data'])
+               var final_res = JSON.parse(res)
+               var resp = final_res[0]['p_out_mssg_flg']
+  
+               if ( resp  === 'S') {
+                   window.alert("Successfully SIgned In");
+               }
+               else {
+                   window.alert("You dont exist")
+               }
+           })
+           .catch(error =>{
+               console.log(error)
+           })
+          );
+        }
       
         // setInvalid("false")
 }
@@ -77,32 +101,36 @@ return (
   <div class="wrapper">
   <div class="container">
     <div class="sign-in-container">
-      <form class="form">
+    <form class="form">
         <h1>LOGIN</h1>
         <div class="login_headline">
           <h3 style={{"marginLeft": "25%"}}>Welcome back.</h3> 
-          <h3>Feel free to browse through....</h3>
+          <h3>REACH TO MILLIONS IN A BLINK</h3>
         </div>
-
-        <CustomInput placeholder="Email" className="custom_input" name="email" callback={emailCallback}/>
-        <CustomInput type="password" placeholder="Password" className="custom_input" name="password" callback={passwordCallback}/>
+        <div style={{"marginBottom": "3%"}}>
+          <CustomInput placeholder="Username" className="custom_input" name="name" callback={emailCallback}/>
+          <p class="error_warning">{emailError}</p>
+        </div>
+        <div style={{"marginBottom": "3%"}}>
+          <CustomInput type="password" placeholder="Password" className="custom_input" name="password" callback={passwordCallback}/>
+          <p class="error_warning">{passwordError}</p>
+        </div>
+        
         <div onClick={handleSubmit}>
           <CustomButton className="form_btn" >
             SIGN IN
           </CustomButton>
         </div>
-
+        {tryAgain ? 
+        <CustomButton className="form_btn">
+            TRY AGAIN
+          </CustomButton>
+         : <></> }
       </form>
     </div>
     <div class="overlay-container">
       <div class="overlay-right">
-        <h1>Hello Friend,</h1>
-        <p class="para">Let us know you better !!</p>
-        <Link to="/">
-          <CustomButton className="overlay_btn" >
-            Please Register
-          </CustomButton>
-        </Link>
+        <h1>REACH TO MILLIONS IN A BLINK</h1>
         
       </div>
     </div>
