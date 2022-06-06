@@ -4,8 +4,8 @@ import Register from "./components/signup/signup"
 import {Routes,Route} from "react-router-dom";
 import Login from "./components/login/login";
 import Homepage from "./components/homepage/homepage"
-import Upl from "./components/upl"
 import CSC from "./components/form/csc"
+import Upload2 from "./components/upload_2.0/upload2"
 function App() {
 
   return (
@@ -14,7 +14,7 @@ function App() {
         <Route exact path ="/" element={<Homepage />}/>
         <Route exact path ="/signup" element={<Register />}/>
         <Route exact path ="/Login" element={<Login />}/>
-        <Route exact path ="/upload" element={<CSC />}/>
+        <Route exact path ="/upload" element={<Upload2 />}/>
       </Routes>
     </div>
   );

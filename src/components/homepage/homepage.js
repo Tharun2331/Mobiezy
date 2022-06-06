@@ -5,14 +5,15 @@ import CustomButton from '../custombutton/custombutton';
 function Homepage() {
     return (
         <div className="home">
-            <div>
+            <div className="hpg">
                 <Link to="/signup">
                     <CustomButton className="form_btn ">
                             Sign up
                     </CustomButton>
                 </Link>
            </div>
-           <div> 
+           
+           <div className="hpg"> 
                 <Link to="/Login">
                         <CustomButton className="form_btn ">
                             Sign In

@@ -2,43 +2,60 @@ import React, { Component } from 'react';
 import "./csc.css"
 // note that you can also export the source data via CountryRegionData. It's in a deliberately concise format to 
 // keep file size down
-import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
+import { StateDropdown, RegionDropdown } from 'react-india-state-region-selector';
 import Upload from "../upload/upload"
-
+import CustomButton from "../custombutton/custombutton"
 class CSC extends Component {
   constructor (props) {
     super(props);
-    this.state = { country: '', region: ''};
+    this.state = { State: '', region: '' };
   }
 
-  selectCountry (val) {
-    this.setState({ country: val });
+  selectState (val) {
+    this.setState({ State: val });
   }
-
+ 
   selectRegion (val) {
     this.setState({ region: val });
   }
 
 
 
+
   render () {
-    const { country, region } = this.state;
+    const { State, region } = this.state;
     return (
-      <div className='main'>
-        <div classname='sub'> 
-        <Upload />
-        <CountryDropdown
-          value={country}
-          onChange={(val) => this.selectCountry(val)} />
+    <div className="upload">
+        <div className="banner">
+          <h1>Upload Banner </h1>
+          <Upload />
+        </div>
+        <StateDropdown
+          name="state"
+          classes="state"
+          value={State}
+          onChange={(val) => this.selectState(val)} />
         <RegionDropdown
-         className='region'
-          country={country}
+          placeholder="City"
+          blankOptionLabel="Select Region"
+          classes="city"
+          State={State}
           value={region}
           onChange={(val) => this.selectRegion(val)} />
-        </div>
+        <select  className='operator' name="Operator">
+           <option>Operator</option>
+           <option>A</option>
+           <option>B</option>
+           <option>C</option>
+           <option>D</option>
+        </select>
+        <CustomButton className="buttons">
+            Submit
+        </CustomButton>
       </div>
     );
   }
 }
 
 export default CSC;
+

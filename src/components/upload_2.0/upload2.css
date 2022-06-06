@@ -1,0 +1,45 @@
+
+.css-1s2u09g-control{
+    margin-bottom:5%;
+    padding: 2% 22px 5px 30px;
+    border-width: 5px;
+    border-color: black;
+    color:grey;
+    width:350px;
+}
+
+.css-1pahdxg-control{
+    margin-bottom:5%;
+    padding: 2% 22px 5px 30px;
+    border-color: black;
+    color:grey;
+    width:350px;
+}
+
+
+.operators{
+    margin-bottom:5%;
+    padding: 5%;
+    width:350px;
+    align-items: center;
+    background-color: hsl(0, 0%, 100%);
+    border-color: hsl(0, 0%, 80%);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    color: hsl(0, 0%, 20%)
+}
+
+.main{
+    display:flex;
+    align-items: center;
+    margin-top:10%;
+    flex-direction:column;
+
+
+}
+
+.banner {
+    margin-left:20%;
+}
+

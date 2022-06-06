@@ -1,16 +1,59 @@
-.main{
+
+.state{
+    padding: 1% 0px 5px;
+    width:19%;
+    margin-bottom: 20px;
+    border-top:none;
+    border-right:none;
+    border-left:none;
+    border-width: 5px;
+    border-color: black;
+    color:grey;
+}
+
+.city{
+    padding: 1% 0px 5px;
+    margin-bottom: 20px;
+    width:19%;
+    border-top:none;
+    border-right:none;
+    border-left:none;
+    border-width: 5px;
+    border-color: black;
+    color:grey
+}
+
+.operator{
+    padding: 1% 0px 5px;
+    margin-bottom: 20px;
+    width:19%;
+    border-top:none;
+    border-right:none;
+    border-left:none;
+    border-width: 5px;
+    border-color: black;
+    color:grey;
+}
+
+.upload{
     display:flex;
-    flex-direction: column;
     align-items: center;
-    width:100%;
-    margin-top:20%;
-    padding:0% 2% 1% 2%
+    margin-top:10%;
+    flex-direction:column;
+    color:rgb(255, 8, 0);
+
+
 }
 
-.region{
-    width:94%;
+.banner {
+    margin-bottom:20px;
+    margin-right:10px;
 }
 
-.sub {
-    padding-top: 12%;
+.buttons {
+    background-color: #ff4b2b;
+    color:white;
+    padding: 20px 53px;
+    margin-top:10px; 
+    border-radius: 30px;
 }
